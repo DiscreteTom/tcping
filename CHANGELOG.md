@@ -2,7 +2,8 @@
 
 ## v0.1.1
 
-- New option: count(`-c`).
+- New option: `--count` / `-c`.
+- New option: `--percentile` / `-P`.
 - Handle Ctrl-C.
 - Print stats.
 
