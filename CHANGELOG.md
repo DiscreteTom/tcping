@@ -3,6 +3,7 @@
 ## v0.1.2
 
 - Fix success rate value and format.
+- New option: `--timestamp` / `-T`.
 
 ## v0.1.1
 

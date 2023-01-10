@@ -17,7 +17,13 @@ const argv = yargs(process.argv.slice(2))
       alias: "percentile",
       default: "",
       description:
-        'A list of percentile to display, separated by ",", e.g. "95,99"',
+        'A list of percentile to display, separated by ",", e.g. "95,99".',
+    },
+    T: {
+      type: "boolean",
+      alias: "timestamp",
+      default: false,
+      description: "Display timestamp in output.",
     },
   })
   .parseSync();
@@ -29,4 +35,5 @@ export const config = {
   host: argv._[0] as string,
   count: argv.c == -1 ? Infinity : argv.c,
   percentile: argv.P,
+  timestamp: argv.T,
 };

@@ -52,7 +52,10 @@ export async function run() {
         sock
           .on("connect", function () {
             const latencyMs = (now() - start) / 1000;
-            console.log(`connected: ${latencyMs.toFixed(3)}ms`);
+            const result =
+              (config.timestamp ? new Date().toISOString() + " " : "") +
+              `connected: ${latencyMs.toFixed(3)}ms`;
+            console.log(result);
             sock.destroy();
 
             // update stats
