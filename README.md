@@ -23,3 +23,5 @@ connected: 50.367ms
 connected: 45.240ms
 connected: 48.220ms
 ```
+
+## [CHANGELOG](https://github.com/DiscreteTom/tcping/blob/main/CHANGELOG.md)
