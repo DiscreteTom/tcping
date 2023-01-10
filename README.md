@@ -1,6 +1,6 @@
 # tcping
 
-[![npm](https://img.shields.io/npm/v/@discretetom/tcping?style=flat-square)](https://www.npmjs.com/package/@discretetom/tcping)
+[![npm](https://img.shields.io/npm/v/@discretetom/tcping?color=green&style=flat-square)](https://www.npmjs.com/package/@discretetom/tcping)
 ![license](https://img.shields.io/github/license/DiscreteTom/tcping?style=flat-square)
 
 A CLI tool to test how long it takes to establish an TCP connection to a specific address, with percentile support (e.g. p99).
