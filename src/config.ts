@@ -1,7 +1,7 @@
 import yargs from "yargs";
 
 const argv = yargs(process.argv.slice(2))
-  .usage("Usage: $0 [options] <host> [port]")
+  .usage("Usage: tcping [options] <host> [port]")
   .options({
     i: { type: "number", alias: "interval", default: 500 },
     t: { type: "number", alias: "timeout", default: 3000 },
