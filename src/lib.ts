@@ -1,6 +1,7 @@
 import net from "net";
 import dns from "dns";
 import { config } from "./config";
+import { stats } from "./stats";
 
 async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -13,7 +14,9 @@ function now() {
 }
 
 export async function run() {
-  console.log(`host: ${config.host} port: ${config.port}`);
+  console.log(
+    `host: ${config.host}, port: ${config.port}, count: ${config.count}`
+  );
 
   // check whether host is ip address using regex
   if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(config.host)) {
@@ -37,7 +40,9 @@ export async function run() {
     }
   }
 
-  while (true) {
+  console.log(); // empty line
+
+  while (stats.sent < config.count) {
     try {
       await new Promise<void>((resolve, reject) => {
         const sock = new net.Socket();
@@ -46,8 +51,16 @@ export async function run() {
         const start = now();
         sock
           .on("connect", function () {
-            console.log(`connected: ${((now() - start) / 1000).toFixed(3)}ms`);
+            const latencyMs = (now() - start) / 1000;
+            console.log(`connected: ${latencyMs.toFixed(3)}ms`);
             sock.destroy();
+
+            // update stats
+            stats.received++;
+            stats.min = Math.min(stats.min, latencyMs);
+            stats.max = Math.max(stats.max, latencyMs);
+            stats.sum += latencyMs;
+
             resolve();
           })
           .on("error", function (e) {
@@ -57,6 +70,8 @@ export async function run() {
             reject("timeout");
           })
           .connect(config.port, config.host);
+
+        stats.sent++;
       });
     } catch (e) {
       console.log(e);
