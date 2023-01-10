@@ -1,0 +1,19 @@
+{
+  "name": "@discretetom/tcping",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:DiscreteTom/tcping.git",
+  "author": "DiscreteTom <discrete_tom@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^17.6.2"
+  },
+  "bin": {
+    "tcping": "out/cli/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/yargs": "^17.0.18",
+    "typescript": "^4.9.4"
+  }
+}
