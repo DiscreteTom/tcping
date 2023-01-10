@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.2
+
+- Fix success rate value and format.
+
 ## v0.1.1
 
 - New option: `--count` / `-c`.

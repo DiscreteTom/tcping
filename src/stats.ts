@@ -21,7 +21,7 @@ export function statsToString() {
     [
       `sent: ${stats.sent}`,
       `received: ${stats.received}`,
-      `success rate: ${(stats.sent / stats.received) * 100}%`,
+      `success rate: ${((stats.received / stats.sent) * 100).toFixed(2)}%`,
     ].join(", ") +
     "\n" +
     [
