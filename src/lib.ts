@@ -1,22 +1,26 @@
 import net from "net";
 import dns from "dns";
-
-const address = process.argv[2];
-const [host, port] = address.split(":");
-
-console.log(`host: ${host} port: ${port}`);
+import { config } from "./config";
 
 async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
+/** Get current time in microseconds. */
+function now() {
+  const hrtime = process.hrtime();
+  return hrtime[0] * 1000000 + hrtime[1] / 1000;
+}
+
 export async function run() {
+  console.log(`host: ${config.host} port: ${config.port}`);
+
   // check whether host is ip address using regex
-  if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(host)) {
+  if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(config.host)) {
     // not ip address, dns lookup
     try {
       await new Promise<void>((resolve, reject) => {
-        dns.lookup(host, (err, address, family) => {
+        dns.lookup(config.host, (err, address, family) => {
           if (err) {
             reject(err);
             return;
@@ -37,12 +41,12 @@ export async function run() {
     try {
       await new Promise<void>((resolve, reject) => {
         const sock = new net.Socket();
-        sock.setTimeout(3000);
+        sock.setTimeout(config.timeout);
 
-        const start = Date.now();
+        const start = now();
         sock
           .on("connect", function () {
-            console.log(`connected: ${Date.now() - start}ms`);
+            console.log(`connected: ${((now() - start) / 1000).toFixed(3)}ms`);
             sock.destroy();
             resolve();
           })
@@ -52,12 +56,12 @@ export async function run() {
           .on("timeout", function () {
             reject("timeout");
           })
-          .connect(Number(port), host);
+          .connect(config.port, config.host);
       });
     } catch (e) {
       console.log(e);
     }
 
-    await sleep(500);
+    await sleep(config.interval);
   }
 }
