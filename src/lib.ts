@@ -58,7 +58,8 @@ export async function run() {
             console.log(result);
             sock.destroy();
 
-            // update stats
+            // update stats on success
+            stats.sent++;
             stats.received++;
             stats.min = Math.min(stats.min, latencyMs);
             stats.max = Math.max(stats.max, latencyMs);
@@ -74,10 +75,10 @@ export async function run() {
             reject("timeout");
           })
           .connect(config.port, config.host);
-
-        stats.sent++;
       });
     } catch (e) {
+      // update stats on failure
+      stats.sent++;
       console.log(e);
     }
 
