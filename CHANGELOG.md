@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.1.3
+
+- Optimize performance.
+- Optimize code.
+
 ## v0.1.2
 
 - Fix success rate value and format.
