@@ -29,13 +29,9 @@ export function statsToString() {
       `max: ${stats.max.toFixed(3)}ms`,
       `avg: ${(stats.sum / stats.received).toFixed(3)}ms`,
       // percentile
-      ...config.percentile
-        .split(",")
-        .filter((p) => p != "")
-        .map(
-          (p) =>
-            `p${p}: ${getPercentile(stats.records, parseInt(p)).toFixed(3)}ms`
-        ),
+      ...config.percentile.map(
+        (p) => `p${p}: ${getPercentile(stats.records, p).toFixed(3)}ms`
+      ),
     ].join(", ")
   );
 }

@@ -34,6 +34,8 @@ export const config = {
   port: (argv._[1] as number) ?? argv.p,
   host: argv._[0] as string,
   count: argv.c == -1 ? Infinity : argv.c,
-  percentile: argv.P,
+  percentile: argv.P.split(",")
+    .filter((x) => x.length > 0)
+    .map((x) => Number(x)),
   timestamp: argv.T,
 };
