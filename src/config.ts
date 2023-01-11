@@ -28,7 +28,7 @@ const argv = yargs(process.argv.slice(2))
   })
   .parseSync();
 
-export const config = {
+export const config = Object.freeze({
   interval: argv.i,
   timeout: argv.t,
   port: (argv._[1] as number) ?? argv.p,
@@ -38,4 +38,4 @@ export const config = {
     .filter((x) => x.length > 0)
     .map((x) => Number(x)),
   timestamp: argv.T,
-};
+});
