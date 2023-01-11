@@ -2,6 +2,7 @@ import net from "net";
 import dns from "dns";
 import { config } from "./config";
 import { stats } from "./stats";
+import * as https from "https";
 
 async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -76,6 +77,53 @@ export async function run() {
             reject("timeout");
           })
           .connect(config.port, config.host);
+      });
+    } catch (e) {
+      // update stats on failure
+      stats.sent++;
+      console.log(e);
+    }
+
+    await sleep(config.interval);
+  }
+}
+
+export async function runHttp() {
+  console.log(`HTTP mode, url: ${config.url}, count: ${config.count}`);
+  console.log(); // empty line
+
+  while (stats.sent < config.count) {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const start = now();
+        https
+          .request(config.url, { timeout: config.timeout }, (res) => {
+            res.on("data", () => {}); // ignore response body. this function is required to receive response.
+            res.on("close", () => {
+              const latencyMs = (now() - start) / 1000;
+              const result =
+                (config.timestamp ? new Date().toISOString() + " " : "") +
+                `get: ${latencyMs.toFixed(3)}ms, status: ${
+                  res.statusCode
+                }, length: ${res.headers["content-length"]}`;
+              console.log(result);
+
+              // update stats on success
+              stats.sent++;
+              stats.received++;
+              stats.min = Math.min(stats.min, latencyMs);
+              stats.max = Math.max(stats.max, latencyMs);
+              stats.sum += latencyMs;
+              // record latency for percentile calculation
+              if (config.percentile.length > 0) stats.records.push(latencyMs);
+
+              resolve();
+            });
+            res.on("error", (e) => reject(e));
+          })
+          .on("error", (e) => reject(e))
+          .on("timeout", () => reject("timeout"))
+          .end();
       });
     } catch (e) {
       // update stats on failure

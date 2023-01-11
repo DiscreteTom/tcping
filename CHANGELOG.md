@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.4
+
+- Add HTTP mode.
+
 ## v0.1.3
 
 - Optimize performance.
