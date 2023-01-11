@@ -1,6 +1,6 @@
 import { config } from "./config";
 
-function getPercentile(sorted: number[], percentile: number) {
+function getPercentile(sorted: readonly number[], percentile: number) {
   const index = Math.floor((percentile / 100) * sorted.length);
   return sorted[index];
 }
