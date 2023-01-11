@@ -17,7 +17,7 @@ const argv = yargs(process.argv.slice(2))
       type: "number",
       alias: "count",
       default: -1,
-      description: "Number of pings to send. -1 for infinite.",
+      description: "Number of requests to send. -1 for infinite.",
     },
     P: {
       type: "string",
