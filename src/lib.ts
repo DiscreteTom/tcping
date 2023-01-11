@@ -3,6 +3,7 @@ import dns from "dns";
 import { config } from "./config";
 import { stats } from "./stats";
 import * as https from "https";
+import * as http from "http";
 
 async function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -96,7 +97,7 @@ export async function runHttp() {
     try {
       await new Promise<void>((resolve, reject) => {
         const start = now();
-        https
+        (config.url.startsWith("https") ? https : http)
           .request(config.url, { timeout: config.timeout }, (res) => {
             res.on("data", () => {}); // ignore response body. this function is required to receive response.
             res.on("close", () => {
