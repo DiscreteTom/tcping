@@ -64,7 +64,8 @@ export async function run() {
             stats.min = Math.min(stats.min, latencyMs);
             stats.max = Math.max(stats.max, latencyMs);
             stats.sum += latencyMs;
-            stats.records.push(latencyMs);
+            // record latency for percentile calculation
+            if (config.percentile.length > 0) stats.records.push(latencyMs);
 
             resolve();
           })
