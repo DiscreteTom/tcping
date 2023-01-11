@@ -1,9 +1,8 @@
 import { config } from "./config";
 
-function getPercentile(values: number[], percentile: number) {
-  values.sort((a, b) => a - b);
-  const index = Math.floor((percentile / 100) * values.length);
-  return values[index];
+function getPercentile(sorted: number[], percentile: number) {
+  const index = Math.floor((percentile / 100) * sorted.length);
+  return sorted[index];
 }
 
 export const stats = {
@@ -16,6 +15,9 @@ export const stats = {
 };
 
 export function statsToString() {
+  // sort records for percentile calculation
+  if (config.percentile.length > 0) stats.records.sort((a, b) => a - b);
+
   return (
     `statistics:\n` +
     [
